@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'dmSans';
+    src: url('/fonts/DMSans-VariableFont_opsz,wght.ttf');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'dmSansItalic';
+    src: url('/fonts/DMSans-Italic-VariableFont_opsz,wght.ttf');
+    font-weight: 100 900;
+    font-style: italic;
+    font-display: swap;
+}
