@@ -1,15 +1,20 @@
 <template>
-  <nav class="flex justify-between items-center px-[5%] pt-[12px]">
-    <span class="font-['poppinsBold'] text-[30px] bg-gradient-to-r from-[#13B0F5] to-[#CA24B4] bg-clip-text text-transparent font-medium">Adrian Paul</span>
-    <div class="flex font-['dmSans'] text-[#666666] text-[20px]">
+  <nav class="relative flex flex-nowrap justify-between items-center gap-4 px-4 md:px-[5%] pt-[12px]">
+    <span
+      class="animation name-animation font-['poppinsBold'] text-[30px] bg-gradient-to-r from-[#13B0F5] to-[#CA24B4] bg-clip-text text-transparent font-medium"
+      data-replace="De Los Reyes"
+    >
+      Adrian Paul
+    </span>
+    <div class="hidden md:flex flex-wrap justify-center items-center gap-4 font-['dmSans'] text-[#666666] text-[20px]">
       <!-- Navigations -->
-      <div class="flex gap-[24px] mr-[40px]">
+      <div class="flex flex-wrap justify-center gap-4 md:gap-[24px] md:mr-[40px]">
         <button class="animation" data-replace="About">About</button>
         <button class="animation" data-replace="Tech Stack">Tech Stack</button>
         <button class="animation" data-replace="Projects">Projects</button>
         <button class="animation" data-replace="Contact">Contact</button>
       </div>
-      <div class="pr-[20px]" v-for="soc in socials" :key="soc.name">
+      <div class="pr-0 md:pr-[20px]" v-for="soc in socials" :key="soc.name">
         <!-- Socials -->
         <img
           class="w-[30px]"
@@ -18,9 +23,44 @@
         />
       </div>
     </div>
+    <button
+      class="md:hidden relative flex flex-col justify-center gap-1.5 w-10 h-10 p-2 text-[#666666]"
+      type="button"
+      aria-label="Toggle navigation menu"
+      :aria-expanded="menuOpen"
+      @click="menuOpen = !menuOpen"
+    >
+      <span class="menu-bar" :class="{ 'menu-bar-top-open': menuOpen }"></span>
+      <span class="menu-bar" :class="{ 'menu-bar-middle-open': menuOpen }"></span>
+      <span class="menu-bar" :class="{ 'menu-bar-bottom-open': menuOpen }"></span>
+    </button>
+    <Transition name="menu">
+      <div
+        v-show="menuOpen"
+        class="absolute top-full left-4 right-4 z-10 flex flex-col gap-6 p-6 rounded-lg border border-[#e8e4dc] bg-[#faf9f6] shadow-lg font-['dmSans'] text-[18px] text-[#666666] md:hidden"
+      >
+        <div class="flex flex-col items-center gap-4">
+          <button class="animation" data-replace="About" @click="menuOpen = false">About</button>
+          <button class="animation" data-replace="Tech Stack" @click="menuOpen = false">Tech Stack</button>
+          <button class="animation" data-replace="Projects" @click="menuOpen = false">Projects</button>
+          <button class="animation" data-replace="Contact" @click="menuOpen = false">Contact</button>
+        </div>
+        <div class="flex justify-center gap-6">
+          <button
+            v-for="soc in socials"
+            :key="soc.name"
+            type="button"
+            :aria-label="soc.name"
+            @click="handleSocialClick(soc.url)"
+          >
+            <img class="w-7 h-7" :src="soc.iconPath" :alt="soc.name" />
+          </button>
+        </div>
+      </div>
+    </Transition>
   </nav>
-  <main class="flex justify-center items-center gap-[15%] mt-[10%]">
-    <div class="font-['poppinsBold'] text-[58px] text-[#42446E]">
+  <main class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-[15%] mt-20 md:mt-[10%] px-4">
+    <div class="font-['poppinsBold'] text-[36px] sm:text-[46px] md:text-[58px] text-[#42446E]">
       <p>Hi!</p>
       <p>My name is</p>
       <p
@@ -36,24 +76,24 @@
       <p>I build things for web</p>
     </div>
     <img
-      class="object-cover rounded-[50%] w-[350px] h-[350px]"
+      class="object-cover rounded-[50%] w-56 h-56 sm:w-72 sm:h-72 md:w-[350px] md:h-[350px]"
       src="/src/assets/images/Home/Ez.jpg"
     />
   </main>
 
-  <section class="flex flex-col justify-center mt-[20%]">
+  <section class="flex flex-col justify-center mt-32 md:mt-[20%]">
     <div class="flex flex-col items-center">
-      <p class="font-[poppinsBold] text-[48px] text-[#42446E]">My Tech Stack</p>
-      <p class="font-[poppins] text-[48px]">
+      <p class="font-[poppinsBold] text-[32px] sm:text-[40px] md:text-[48px] text-[#42446E] text-center">My Tech Stack</p>
+      <p class="font-[poppins] text-[24px] sm:text-[32px] md:text-[48px] text-center px-4">
         Technologies I've been working with recently
       </p>
     </div>
 
     <!-- Tech Stack Icons-->
-    <div class="flex justify-center mt-[100px]">
-        <div class="grid grid-cols-7 gap-[105px]">
+    <div class="flex justify-center mt-12 md:mt-[100px] px-4">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-8 sm:gap-12 md:gap-[105px]">
           <img
-            class="w-[120px] h-[120px]"
+            class="w-20 h-20 sm:w-24 sm:h-24 md:w-[120px] md:h-[120px]"
             v-for="icon in techStack"
             :key="icon.name"
             :src="icon.iconPath"
@@ -63,21 +103,21 @@
     </div>
   </section>
 
-  <section class="flex justify-center mt-[20%]">
-    <p class="font-['poppinsBold'] text-[48px] text-[#42446E]">Achievements</p>
+  <section class="flex justify-center mt-32 md:mt-[20%]">
+    <p class="font-['poppinsBold'] text-[32px] sm:text-[40px] md:text-[48px] text-[#42446E]">Achievements</p>
   </section>
 
   <section>
-    <div class="text-[18px] font-[dmSans] flex flex-col justify-between px-[5%]">
-        <div class="flex justify-between">
+    <div class="text-[18px] font-[dmSans] flex flex-col justify-between px-4 md:px-[5%]">
+        <div class="flex flex-col md:flex-row justify-between gap-8">
             <p>Adrian</p>
-            <div class="flex gap-[100px]">
-                <div class="flex gap-[50px]">
+            <div class="flex flex-col md:flex-row gap-6 md:gap-[100px]">
+                <div class="flex flex-col sm:flex-row gap-2 sm:gap-[50px] break-words">
                     <p>+63 976 002 4418</p>
                     <p>adrianpauldelosreyes@gmail.com</p>
                 </div>
                 <!-- Socials -->
-                <div class="flex gap-[20px]" >
+                <div class="flex gap-[20px]">
                     <img
                         class="w-[30px]"
                         v-for="soc in socials" :key="soc.name"
@@ -87,12 +127,12 @@
                 </div>
             </div>
         </div>
-        <div class="w-full h-[1px] bg-[#141414] m-auto my-[50px]"></div>
-        <div class="flex justify-between mb-[1%]">
-            <div class="flex gap-[52px] text-[18px] font-[dmSans]">
+        <div class="w-full h-[1px] bg-[#141414] m-auto my-8 md:my-[50px]"></div>
+        <div class="flex flex-col md:flex-row justify-between gap-6 mb-4 md:mb-[1%]">
+            <div class="flex flex-wrap gap-4 md:gap-[52px] text-[18px] font-[dmSans]">
                 <button v-for="button in FooterButtons" :key="button.name">{{ button.name }}</button>
             </div>
-            <p>Built by <span class="bg-gradient-to-r from-[#13B0F5] to-[#E70FAA] bg-clip-text text-transparent">Adrian Paul</span> with <span class="bg-gradient-to-r from-[#13B0F5] to-[#E70FAA] bg-clip-text text-transparent">Love</span> and <span class="bg-gradient-to-r from-[#13B0F5] to-[#E70FAA] bg-clip-text text-transparent">Dedication</span></p>
+            <p class="text-left md:text-right">Built by <span class="bg-gradient-to-r from-[#13B0F5] to-[#E70FAA] bg-clip-text text-transparent">Adrian Paul</span> with <span class="bg-gradient-to-r from-[#13B0F5] to-[#E70FAA] bg-clip-text text-transparent">Love</span> and <span class="bg-gradient-to-r from-[#13B0F5] to-[#E70FAA] bg-clip-text text-transparent">Dedication</span></p>
         </div>
     </div>
   </section>
@@ -137,6 +177,8 @@ const socials = ref<Socials[]>([
     iconPath: Telegram,
   },
 ]);
+
+const menuOpen = ref(false);
 
 const techStack = ref<TechStack[]>([
   {
@@ -229,6 +271,38 @@ const goToHome = () => {
 }
 </script>
 <style lang="css" scoped>
+.menu-bar {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: currentColor;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.menu-bar-top-open {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.menu-bar-middle-open {
+  opacity: 0;
+}
+
+.menu-bar-bottom-open {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+.menu-enter-active,
+.menu-leave-active {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  transform-origin: top right;
+}
+
+.menu-enter-from,
+.menu-leave-to {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.98);
+}
+
 .animation {
   overflow: hidden;
   position: relative;
