@@ -108,11 +108,13 @@
         </a>
       </div>
     </div>
-    <img
-      class="order-1 md:order-2 scroll-reveal scroll-reveal-right object-cover rounded-[50%] w-56 h-56 sm:w-72 sm:h-72 md:w-[350px] md:h-[350px]"
-      :src="HeroImage"
-      alt="Portrait of Adrian Paul V. De Los Reyes"
-    />
+    <div class="hero-image-frame order-1 md:order-2 scroll-reveal scroll-reveal-right rounded-[50%] w-56 h-56 sm:w-72 sm:h-72 md:w-[350px] md:h-[350px]">
+      <img
+        class="hero-image"
+        :src="HeroImage"
+        alt="Portrait of Adrian Paul V. De Los Reyes"
+      />
+    </div>
   </main>
 
   <section id="about" class="content-section flex flex-col justify-center mt-24 md:mt-32 px-4 md:px-[8%]">
@@ -1295,11 +1297,24 @@ a:focus-visible {
   transform: translateX(4px);
 }
 
-.hero-section > img {
+.hero-image-frame {
+  position: relative;
+  overflow: hidden;
   transition: transform 0.45s ease, filter 0.45s ease;
 }
 
-.hero-section > img:hover {
+.hero-image {
+  position: absolute;
+  top: -8%;
+  left: 0;
+  width: 100%;
+  height: 116%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.45s ease;
+}
+
+.hero-image-frame:hover {
   filter: drop-shadow(0 18px 22px rgb(19 176 245 / 22%))
     drop-shadow(0 8px 18px rgb(202 36 180 / 18%));
   transform: translateY(-8px) rotate(2deg) scale(1.03);
@@ -1665,7 +1680,7 @@ body.dark-mode .tech-stack-icon:hover {
   .focus-list li,
   .form-submit,
   .resume-download-button,
-  .hero-section > img,
+  .hero-image-frame,
   .dark-mode-toggle,
   .tech-name,
   .project-filter,
@@ -1680,7 +1695,7 @@ body.dark-mode .tech-stack-icon:hover {
   .focus-list li:hover,
   .form-submit:hover,
   .resume-download-button:hover,
-  .hero-section > img:hover,
+  .hero-image-frame:hover,
   .dark-mode-toggle:hover,
   .tech-name:hover,
   .project-filter:hover,
@@ -1859,6 +1874,19 @@ body.dark-mode .tech-stack-icon:hover {
 .scroll-reveal.is-visible {
   opacity: 1;
   transform: translate3d(0, 0, 0);
+}
+
+.hero-image-frame.scroll-reveal {
+  transition:
+    opacity 0.7s ease var(--reveal-delay),
+    transform 0.45s ease var(--reveal-delay),
+    filter 0.45s ease;
+}
+
+.hero-image-frame.scroll-reveal:hover {
+  filter: drop-shadow(0 18px 22px rgb(19 176 245 / 22%))
+    drop-shadow(0 8px 18px rgb(202 36 180 / 18%));
+  transform: translateY(-8px) rotate(2deg) scale(1.03);
 }
 
 @media (max-width: 640px) {
