@@ -214,10 +214,26 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
           <p class="description-text">Have a project in mind or want to say hello?</p>
-          <a class="contact-email" href="mailto:adrianpauldelosreyes@gmail.com">
-            adrianpauldelosreyes@gmail.com
-          </a>
-          <p class="mt-3 dark-mode-text">+63 998 914 1365</p>
+          <div class="contact-details">
+            <div class="contact-detail">
+              <p class="contact-detail-label">Email</p>
+              <a class="contact-email" href="mailto:adrianpauldelosreyes@gmail.com">
+                adrianpauldelosreyes@gmail.com
+              </a>
+            </div>
+            <div class="contact-detail">
+              <p class="contact-detail-label">Telegram</p>
+              <a class="contact-link dark-mode-text" href="https://t.me/trueYanni" target="_blank" rel="noreferrer">
+                @trueYanni
+              </a>
+            </div>
+            <div class="contact-detail">
+              <p class="contact-detail-label">Phone</p>
+              <a class="contact-link dark-mode-text" href="tel:+639989141365">
+                +63 998 914 1365
+              </a>
+            </div>
+          </div>
         </div>
         <form class="contact-form" @submit.prevent="submitContactForm">
           <div class="form-field">
@@ -670,7 +686,13 @@ const updateScrollTopVisibility = (): void => {
   font-family: "dmSans";
   font-size: 1.125rem;
   line-height: 1.75;
-  transition: background-color 0.25s ease, border-color 0.25s ease;
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.content-card:hover {
+  border-color: rgb(19 176 245 / 55%);
+  box-shadow: 0 18px 38px rgb(19 176 245 / 12%);
+  transform: translateY(-3px);
 }
 
 .project-card {
@@ -707,6 +729,18 @@ const updateScrollTopVisibility = (): void => {
   transform: translateY(-2px);
 }
 
+.skill-tag {
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.skill-tag:hover {
+  border-color: #13B0F5;
+  background-color: #eff6ff;
+  box-shadow: 0 5px 12px rgb(19 176 245 / 16%);
+  color: #1e3a8a;
+  transform: translateY(-3px) rotate(-1deg);
+}
+
 .contact-email {
   display: inline-block;
   margin-top: 1rem;
@@ -717,6 +751,40 @@ const updateScrollTopVisibility = (): void => {
   font-family: "poppinsBold";
   font-size: clamp(1rem, 3vw, 1.5rem);
   overflow-wrap: anywhere;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.contact-email:hover {
+  filter: drop-shadow(0 5px 10px rgb(19 176 245 / 24%));
+  transform: translateY(-2px);
+}
+
+.contact-details {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.contact-detail {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.contact-detail-label {
+  color: #42446E;
+  font-family: "poppinsBold";
+  font-size: 0.9rem;
+}
+
+.contact-link {
+  color: #4b5563;
+  font-family: "dmSans";
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.contact-link:hover {
+  color: #13B0F5;
+  transform: translateX(4px);
 }
 
 .currently-learning {
@@ -761,6 +829,8 @@ const updateScrollTopVisibility = (): void => {
 }
 
 .form-submit {
+  position: relative;
+  overflow: hidden;
   border: 0;
   border-radius: 9999px;
   background-image: linear-gradient(to right, #13B0F5, #CA24B4);
@@ -778,6 +848,24 @@ const updateScrollTopVisibility = (): void => {
   box-shadow: 0 8px 16px rgb(66 68 110 / 20%);
 }
 
+.form-submit::after,
+.resume-download-button::after {
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 45%;
+  height: 100%;
+  background: rgb(255 255 255 / 28%);
+  content: "";
+  transform: skewX(-18deg);
+  transition: left 0.45s ease;
+}
+
+.form-submit:hover::after,
+.resume-download-button:hover::after {
+  left: 130%;
+}
+
 .form-status {
   color: #047857;
   font-family: "dmSans";
@@ -785,6 +873,8 @@ const updateScrollTopVisibility = (): void => {
 }
 
 .resume-download-button {
+  position: relative;
+  overflow: hidden;
   display: inline-block;
   margin-top: 1.5rem;
   border-radius: 9999px;
@@ -857,6 +947,12 @@ const updateScrollTopVisibility = (): void => {
 .focus-list li {
   position: relative;
   padding-left: 1.25rem;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.focus-list li:hover {
+  color: #13B0F5;
+  transform: translateX(5px);
 }
 
 .focus-list li::before {
@@ -871,6 +967,12 @@ const updateScrollTopVisibility = (): void => {
   border-color: #475569;
   background-color: #111827;
   color: #e2e8f0;
+}
+
+:global(body.dark-mode) .skill-tag:hover {
+  border-color: #13B0F5;
+  background-color: #1e293b;
+  color: #e0f2fe;
 }
 
 :global(body.dark-mode) .project-tag {
@@ -901,6 +1003,14 @@ const updateScrollTopVisibility = (): void => {
   color: #f3f4f6;
 }
 
+:global(body.dark-mode) .contact-detail-label {
+  color: #f9fafb;
+}
+
+:global(body.dark-mode) .contact-link {
+  color: #e5e7eb;
+}
+
 .animation:focus-visible,
 button:focus-visible,
 a:focus-visible {
@@ -918,6 +1028,26 @@ a:focus-visible {
   transform: translateY(-4px) scale(1.12);
   filter: drop-shadow(0 6px 8px rgb(8 92 128 / 30%))
     drop-shadow(0 3px 10px rgb(126 20 111 / 25%));
+}
+
+.footer-contact a,
+.footer-links button {
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-contact a:hover,
+.footer-links button:hover {
+  transform: translateX(4px);
+}
+
+.hero-section > img {
+  transition: transform 0.45s ease, filter 0.45s ease;
+}
+
+.hero-section > img:hover {
+  filter: drop-shadow(0 18px 22px rgb(19 176 245 / 22%))
+    drop-shadow(0 8px 18px rgb(202 36 180 / 18%));
+  transform: translateY(-8px) rotate(2deg) scale(1.03);
 }
 
 .portfolio-footer {
@@ -1090,6 +1220,18 @@ a:focus-visible {
   transition: border-color 0.25s ease, color 0.25s ease;
 }
 
+.dark-mode-toggle:hover {
+  border-color: #13B0F5;
+  box-shadow: 0 5px 14px rgb(19 176 245 / 18%);
+  transform: translateY(-2px);
+}
+
+.dark-mode-toggle:hover {
+  border-color: #13B0F5;
+  box-shadow: 0 5px 14px rgb(19 176 245 / 18%);
+  transform: translateY(-2px);
+}
+
 .theme-icon {
   position: absolute;
   top: 50%;
@@ -1213,6 +1355,18 @@ body.dark-mode .tech-stack-icon:hover {
   font-size: clamp(1.25rem, 2vw, 2rem);
   font-weight: 600;
   white-space: nowrap;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.tech-name:hover {
+  filter: drop-shadow(0 4px 8px rgb(202 36 180 / 28%));
+  transform: translateY(-3px);
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.tech-name:hover {
+  filter: drop-shadow(0 4px 8px rgb(202 36 180 / 28%));
+  transform: translateY(-3px);
 }
 
 .tech-stack-icon {
@@ -1262,6 +1416,41 @@ body.dark-mode .tech-stack-icon:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .content-card,
+  .skill-tag,
+  .contact-email,
+  .focus-list li,
+  .form-submit,
+  .resume-download-button,
+  .hero-section > img,
+  .dark-mode-toggle,
+  .tech-name,
+  .footer-contact a,
+  .footer-links button {
+    transition: none;
+  }
+
+  .content-card:hover,
+  .skill-tag:hover,
+  .contact-email:hover,
+  .focus-list li:hover,
+  .form-submit:hover,
+  .resume-download-button:hover,
+  .hero-section > img:hover,
+  .dark-mode-toggle:hover,
+  .tech-name:hover,
+  .footer-contact a:hover,
+  .footer-links button:hover {
+    transform: none;
+    filter: none;
+    box-shadow: none;
+  }
+
+  .form-submit::after,
+  .resume-download-button::after {
+    display: none;
+  }
+
   .social-icon {
     transition: none;
   }
