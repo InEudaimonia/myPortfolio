@@ -6,7 +6,7 @@
     >
       Adrian Paul
     </span>
-    <div class="hidden md:flex flex-wrap justify-center items-center gap-4 font-['dmSans'] text-[#666666] text-[20px]">
+    <div class="hidden md:flex flex-wrap justify-center items-center gap-4 font-['dmSans'] text-[#666666] text-[20px] dark-mode-text">
       <!-- Navigations -->
       <div class="flex flex-wrap justify-center gap-4 md:gap-[24px] md:mr-[40px]">
         <button class="animation" data-replace="About">About</button>
@@ -18,10 +18,20 @@
         <!-- Socials -->
         <img
           class="w-[30px]"
-          :src="soc.iconPath"
+          :src="isDarkMode ? soc.darkIconPath : soc.iconPath"
           @click="handleSocialClick(soc.url)"
         />
       </div>
+      <button
+        class="dark-mode-toggle"
+        type="button"
+        :aria-label="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+        @click="toggleDarkMode"
+      >
+        <span class="theme-icon" aria-hidden="true">☾</span>
+        <span class="theme-icon" aria-hidden="true">☀</span>
+        <span class="theme-toggle-thumb" :class="{ 'theme-toggle-thumb-dark': isDarkMode }"></span>
+      </button>
     </div>
     <button
       class="md:hidden relative flex flex-col justify-center gap-1.5 w-10 h-10 p-2 text-[#666666]"
@@ -37,7 +47,7 @@
     <Transition name="menu">
       <div
         v-show="menuOpen"
-        class="absolute top-full left-4 right-4 z-10 flex flex-col gap-6 p-6 rounded-lg border border-[#e8e4dc] bg-[#faf9f6] shadow-lg font-['dmSans'] text-[18px] text-[#666666] md:hidden"
+        class="absolute top-full left-4 right-4 z-10 flex flex-col gap-6 p-6 rounded-lg border border-[#e8e4dc] bg-[#faf9f6] shadow-lg font-['dmSans'] text-[18px] text-[#666666] dark-mode-menu md:hidden"
       >
         <div class="flex flex-col items-center gap-4">
           <button class="animation" data-replace="About" @click="menuOpen = false">About</button>
@@ -53,14 +63,24 @@
             :aria-label="soc.name"
             @click="handleSocialClick(soc.url)"
           >
-            <img class="w-7 h-7" :src="soc.iconPath" :alt="soc.name" />
+            <img class="w-7 h-7" :src="isDarkMode ? soc.darkIconPath : soc.iconPath" :alt="soc.name" />
           </button>
         </div>
+        <button
+          class="dark-mode-toggle self-center"
+          type="button"
+          :aria-label="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+          @click="toggleDarkMode"
+        >
+          <span class="theme-icon" aria-hidden="true">☾</span>
+          <span class="theme-icon" aria-hidden="true">☀</span>
+          <span class="theme-toggle-thumb" :class="{ 'theme-toggle-thumb-dark': isDarkMode }"></span>
+        </button>
       </div>
     </Transition>
   </nav>
   <main class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-[15%] mt-20 md:mt-[10%] px-4">
-    <div class="font-['poppinsBold'] text-[36px] sm:text-[46px] md:text-[58px] text-[#42446E]">
+    <div class="font-['poppinsBold'] text-[36px] sm:text-[46px] md:text-[58px] text-[#42446E] dark-mode-heading">
       <p>Hi!</p>
       <p>My name is</p>
       <p
@@ -83,17 +103,36 @@
 
   <section class="flex flex-col justify-center mt-32 md:mt-[20%]">
     <div class="flex flex-col items-center">
-      <p class="font-[poppinsBold] text-[32px] sm:text-[40px] md:text-[48px] text-[#42446E] text-center">My Tech Stack</p>
-      <p class="font-[poppins] text-[24px] sm:text-[32px] md:text-[48px] text-center px-4">
+      <p class="font-[poppinsBold] text-[32px] sm:text-[40px] md:text-[48px] text-[#42446E] text-center dark-mode-heading">My Tech Stack</p>
+      <p class="font-[poppins] text-[24px] sm:text-[32px] md:text-[48px] text-center px-4 dark-mode-text">
         Technologies I've been working with recently
       </p>
     </div>
 
+    <div class="tech-name-carousel" aria-label="Technologies in my tech stack">
+      <div class="tech-name-track">
+        <div
+          v-for="copy in 2"
+          :key="copy"
+          class="tech-name-group"
+          :aria-hidden="copy === 2"
+        >
+          <span
+            v-for="icon in techStack"
+            :key="`${copy}-${icon.name}`"
+            class="tech-name"
+          >
+            {{ icon.name }}
+          </span>
+        </div>
+      </div>
+    </div>
+
     <!-- Tech Stack Icons-->
     <div class="flex justify-center mt-12 md:mt-[100px] px-4">
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-8 sm:gap-12 md:gap-[105px]">
+        <div class="tech-stack-grid grid grid-cols-3 sm:grid-cols-3 md:grid-cols-7 gap-6 sm:gap-12 md:gap-[105px]">
           <img
-            class="w-20 h-20 sm:w-24 sm:h-24 md:w-[120px] md:h-[120px]"
+            class="tech-stack-icon w-20 h-20 sm:w-24 sm:h-24 md:w-[120px] md:h-[120px]"
             v-for="icon in techStack"
             :key="icon.name"
             :src="icon.iconPath"
@@ -104,11 +143,11 @@
   </section>
 
   <section class="flex justify-center mt-32 md:mt-[20%]">
-    <p class="font-['poppinsBold'] text-[32px] sm:text-[40px] md:text-[48px] text-[#42446E]">Achievements</p>
+    <p class="font-['poppinsBold'] text-[32px] sm:text-[40px] md:text-[48px] text-[#42446E] dark-mode-heading">Achievements</p>
   </section>
 
   <section>
-    <div class="text-[18px] font-[dmSans] flex flex-col justify-between px-4 md:px-[5%]">
+    <div class="text-[18px] font-[dmSans] flex flex-col justify-between px-4 md:px-[5%] dark-mode-text">
         <div class="flex flex-col md:flex-row justify-between gap-8">
             <p>Adrian</p>
             <div class="flex flex-col md:flex-row gap-6 md:gap-[100px]">
@@ -127,7 +166,7 @@
                 </div>
             </div>
         </div>
-        <div class="w-full h-[1px] bg-[#141414] m-auto my-8 md:my-[50px]"></div>
+        <div class="footer-divider w-full h-[1px] bg-[#141414] m-auto my-8 md:my-[50px]"></div>
         <div class="flex flex-col md:flex-row justify-between gap-6 mb-4 md:mb-[1%]">
             <div class="flex flex-wrap gap-4 md:gap-[52px] text-[18px] font-[dmSans]">
                 <button v-for="button in FooterButtons" :key="button.name">{{ button.name }}</button>
@@ -139,15 +178,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Github from "../assets/images/svg/Github.svg";
 import LinkedIn from "../assets/images/svg/LinkedIn.svg";
 import Telegram from "../assets/images/svg/Telegram.svg";
+import GithubDark from "../assets/images/svg/GitHubDark.svg";
+import LinkedInDark from "../assets/images/svg/LinkedInDark.svg";
+import TelegramDark from "../assets/images/svg/TelegramDark.svg";
 
 interface Socials {
   name: string;
   url: string;
   iconPath: string;
+  darkIconPath: string;
 }
 
 interface TechStack {
@@ -165,20 +208,35 @@ const socials = ref<Socials[]>([
     name: "Github",
     url: "https://github.com/InEudaimonia",
     iconPath: Github,
+    darkIconPath: GithubDark,
   },
   {
     name: "LinkedIn",
     url: "https://www.linkedin.com/in/adrian-paul-de-los-reyes-38270b312",
     iconPath: LinkedIn,
+    darkIconPath: LinkedInDark,
   },
   {
     name: "Telegram",
     url: "https://t.me/trueYanni",
     iconPath: Telegram,
+    darkIconPath: TelegramDark,
   },
 ]);
 
 const menuOpen = ref(false);
+const isDarkMode = ref(false);
+
+const toggleDarkMode = (): void => {
+  isDarkMode.value = !isDarkMode.value;
+  document.documentElement.classList.toggle("dark", isDarkMode.value);
+  document.body.classList.toggle("dark-mode", isDarkMode.value);
+};
+
+onMounted(() => {
+  isDarkMode.value = document.documentElement.classList.contains("dark");
+  document.body.classList.toggle("dark-mode", isDarkMode.value);
+});
 
 const techStack = ref<TechStack[]>([
   {
@@ -271,6 +329,104 @@ const goToHome = () => {
 }
 </script>
 <style lang="css" scoped>
+:global(html) {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+:global(body) {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+:global(body.dark-mode) {
+  background-color: #111827;
+  color: #e5e7eb;
+}
+
+.dark-mode-text {
+  transition: color 0.25s ease;
+}
+
+.dark-mode-heading {
+  transition: color 0.25s ease;
+}
+
+:global(body.dark-mode) .dark-mode-text {
+  color: #d1d5db;
+}
+
+:global(body.dark-mode) .dark-mode-heading {
+  color: #f3f4f6;
+}
+
+.dark-mode-toggle {
+  position: relative;
+  display: inline-flex;
+  border: 1px solid #d1d5db;
+  border-radius: 9999px;
+  width: 4.5rem;
+  height: 2.25rem;
+  padding: 0 0.45rem;
+  color: #4b5563;
+  background-color: #f3f4f6;
+  font-size: 1rem;
+  line-height: 1;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.theme-icon {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  width: 1.25rem;
+  text-align: center;
+  line-height: 1;
+  transform: translateY(-50%);
+}
+
+.theme-icon:first-child {
+  left: 0.45rem;
+}
+
+.theme-icon:nth-child(2) {
+  right: 0.45rem;
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 0.2rem;
+  left: 0.2rem;
+  z-index: 0;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 20%);
+  transition: transform 0.3s ease, background-color 0.25s ease;
+}
+
+.theme-toggle-thumb-dark {
+  transform: translateX(2.25rem);
+}
+
+body.dark-mode .dark-mode-toggle {
+  border-color: #6b7280;
+  color: #e5e7eb;
+  background-color: #374151;
+}
+
+body.dark-mode .theme-toggle-thumb {
+  background-color: #1f2937;
+}
+
+.dark-mode-menu {
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+:global(body.dark-mode) .dark-mode-menu {
+  border-color: #374151;
+  background-color: #1f2937;
+}
+
 .menu-bar {
   display: block;
   width: 24px;
@@ -301,6 +457,85 @@ const goToHome = () => {
 .menu-leave-to {
   opacity: 0;
   transform: translateY(-8px) scale(0.98);
+}
+
+.tech-name-carousel {
+  width: 100%;
+  overflow: hidden;
+  margin-top: 3rem;
+}
+
+.tech-name-track {
+  display: flex;
+  width: max-content;
+  animation: tech-name-scroll 35s linear infinite;
+}
+
+.tech-name-group {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 3rem;
+  padding-right: 3rem;
+}
+
+.tech-name {
+  background-image: linear-gradient(to right, #13B0F5, #CA24B4);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-family: "dmSans";
+  font-size: clamp(1.25rem, 2vw, 2rem);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tech-stack-icon {
+  transition: transform 0.3s ease, filter 0.3s ease;
+  will-change: transform;
+}
+
+.tech-stack-icon:hover {
+  transform: translateY(-10px) scale(1.08) rotate(2deg);
+  filter: drop-shadow(0 12px 10px rgb(19 176 245 / 20%))
+    drop-shadow(0 6px 14px rgb(202 36 180 / 18%));
+}
+
+@media (max-width: 767px) {
+  .tech-stack-grid img:nth-last-child(2) {
+    grid-column: 1;
+    justify-self: end;
+  }
+
+  .tech-stack-grid img:last-child {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+@keyframes tech-name-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tech-name-track {
+    animation-play-state: paused;
+  }
+
+  .tech-stack-icon {
+    transition: none;
+  }
+
+  .tech-stack-icon:hover {
+    transform: none;
+    filter: none;
+  }
 }
 
 .animation {
@@ -377,5 +612,35 @@ const goToHome = () => {
 
 .animation:hover span {
   transform: translate3d(200%, 0, 0);
+}
+</style>
+
+<style lang="css">
+body.dark-mode {
+  background-color: #111827;
+  color: #e5e7eb;
+}
+
+body.dark-mode .dark-mode-text {
+  color: #d1d5db;
+}
+
+body.dark-mode .dark-mode-heading {
+  color: #f3f4f6;
+}
+
+body.dark-mode .dark-mode-toggle {
+  border-color: #6b7280;
+  color: #e5e7eb;
+}
+
+body.dark-mode .dark-mode-menu {
+  border-color: #374151;
+  background-color: #1f2937;
+  color: #d1d5db;
+}
+
+body.dark-mode .footer-divider {
+  background-color: #6b7280;
 }
 </style>
