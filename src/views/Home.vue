@@ -104,7 +104,7 @@
     </div>
     <img
       class="order-1 md:order-2 scroll-reveal scroll-reveal-right object-cover rounded-[50%] w-56 h-56 sm:w-72 sm:h-72 md:w-[350px] md:h-[350px]"
-      src="/src/assets/images/Home/Ez.jpg"
+      :src="HeroImage"
       alt="Portrait of Adrian Paul V. De Los Reyes"
     />
   </main>
@@ -344,6 +344,23 @@ import Telegram from "../assets/images/svg/Telegram.svg";
 import GithubDark from "../assets/images/svg/GitHubDark.svg";
 import LinkedInDark from "../assets/images/svg/LinkedInDark.svg";
 import TelegramDark from "../assets/images/svg/TelegramDark.svg";
+import HeroImage from "../assets/images/Home/Ez.jpg";
+import HtmlIcon from "../assets/images/svg/techStack/Html.svg";
+import CssIcon from "../assets/images/svg/techStack/Css.svg";
+import JavaScriptIcon from "../assets/images/svg/techStack/JavaScript.svg";
+import TypeScriptIcon from "../assets/images/svg/techStack/TypeScript.svg";
+import VueIcon from "../assets/images/svg/techStack/Vue.svg";
+import NuxtIcon from "../assets/images/svg/techStack/NuxtJs.svg";
+import ReactIcon from "../assets/images/svg/techStack/React.svg";
+import TailwindIcon from "../assets/images/svg/techStack/Tailwind.svg";
+import PiniaIcon from "../assets/images/svg/techStack/Pinia.svg";
+import NpmIcon from "../assets/images/svg/techStack/Npm.svg";
+import NodeIcon from "../assets/images/svg/techStack/Node.svg";
+import PostmanIcon from "../assets/images/svg/techStack/Postman.svg";
+import SassIcon from "../assets/images/svg/techStack/Sass.svg";
+import NextJsIcon from "../assets/images/svg/techStack/NextJs.svg";
+import ViteIcon from "../assets/images/svg/techStack/ViteJs.svg";
+import VsCodeIcon from "../assets/images/svg/techStack/VsCode.svg";
 
 interface Socials {
   name: string;
@@ -476,67 +493,67 @@ onUnmounted(() => {
 const techStack = ref<TechStack[]>([
   {
     name: "HTML",
-    iconPath: "/src/assets/images/svg/techStack/Html.svg",
+    iconPath: HtmlIcon,
   },
   {
     name: "CSS",
-    iconPath: "/src/assets/images/svg/techStack/Css.svg",
+    iconPath: CssIcon,
   },
   {
     name: "JavaScript",
-    iconPath: "/src/assets/images/svg/techStack/JavaScript.svg"
+    iconPath: JavaScriptIcon
   },
   {
     name: "TypeScript",
-    iconPath: "/src/assets/images/svg/techStack/TypeScript.svg"
+    iconPath: TypeScriptIcon
   },
   {
     name: "Vue.js",
-    iconPath: "/src/assets/images/svg/techStack/Vue.svg"
+    iconPath: VueIcon
   },
   {
     name: "Nuxt.js",
-    iconPath: "/src/assets/images/svg/techStack/NuxtJs.svg"
+    iconPath: NuxtIcon
   },
   {
     name: "React",
-    iconPath: "/src/assets/images/svg/techStack/React.svg"
+    iconPath: ReactIcon
   },
   {
     name: "Tailwind CSS",
-    iconPath: "/src/assets/images/svg/techStack/Tailwind.svg"
+    iconPath: TailwindIcon
   },
   {
     name: "Pinia",
-    iconPath: "/src/assets/images/svg/techStack/Pinia.svg"
+    iconPath: PiniaIcon
   },
   {
     name: "NPM",
-    iconPath: "/src/assets/images/svg/techStack/Npm.svg"
+    iconPath: NpmIcon
   },
   {
     name: "Node",
-    iconPath: "/src/assets/images/svg/techStack/Node.svg"
+    iconPath: NodeIcon
   },
   {
     name: "Postman",
-    iconPath: "/src/assets/images/svg/techStack/Postman.svg"
+    iconPath: PostmanIcon
   },
   {
     name: "Sass",
-    iconPath: "/src/assets/images/svg/techStack/Sass.svg"
+    iconPath: SassIcon
   },
   {
     name: "NextJs",
-    iconPath: "/src/assets/images/svg/techStack/NextJs.svg"
+    iconPath: NextJsIcon
   },
   {
     name: "Vite",
-    iconPath: "/src/assets/images/svg/techStack/ViteJs.svg"
+    iconPath: ViteIcon
   },
   {
     name: "VS Code",
-    iconPath: "/src/assets/images/svg/techStack/VsCode.svg"
+    iconPath: VsCodeIcon
   },
 ]);
 
