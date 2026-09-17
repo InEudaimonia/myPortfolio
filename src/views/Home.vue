@@ -4,10 +4,10 @@
     <div class="flex font-['dmSans'] text-[#666666] text-[20px]">
       <!-- Navigations -->
       <div class="flex gap-[24px] mr-[40px]">
-        <button>About</button>
-        <button>Tech Stack</button>
-        <button>Projects</button>
-        <button>Contact</button>
+        <button class="animation" data-replace="About">About</button>
+        <button class="animation" data-replace="Tech Stack">Tech Stack</button>
+        <button class="animation" data-replace="Projects">Projects</button>
+        <button class="animation" data-replace="Contact">Contact</button>
       </div>
       <div class="pr-[20px]" v-for="soc in socials" :key="soc.name">
         <!-- Socials -->
@@ -24,7 +24,12 @@
       <p>Hi!</p>
       <p>My name is</p>
       <p
-        class="bg-gradient-to-r from-[#13B0F5] to-[#CA24B4] bg-clip-text text-transparent"
+        class="animation name-animation
+        bg-gradient-to-r
+        from-[#13B0F5] to-[#CA24B4]
+        bg-clip-text
+        text-transparent"
+        data-replace="De Los Reyes"
       >
         Adrian Paul
       </p>
@@ -223,3 +228,80 @@ const goToHome = () => {
 
 }
 </script>
+<style lang="css" scoped>
+.animation {
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+}
+
+.animation::before,
+.animation::after {
+ content: '';
+  position: absolute;
+  width: 100%;
+  left: 0;
+}
+
+.animation::before {
+  background-color: #54b3d6;
+  height: 2px;
+  bottom: 0;
+  transform-origin: 100% 50%;
+  transform: scaleX(0);
+  transition: transform .3s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.animation::after {
+  content: attr(data-replace);
+  height: 100%;
+  top: 0;
+  width: max-content;
+  white-space: nowrap;
+  transform-origin: 0% 50%;
+  transform: translate3d(-200%, 0, 0);
+  transition: transform .3s cubic-bezier(0.76, 0, 0.24, 1);
+  color: #54b3d6;
+}
+
+.animation:hover::before {
+  transform-origin: 0% 50%;
+  transform: scaleX(1);
+}
+
+.animation:hover {
+  color: transparent;
+}
+
+.name-animation {
+  overflow: visible;
+}
+
+.name-animation:hover {
+  background-image: none;
+}
+
+.name-animation::after {
+  background-image: linear-gradient(to right, #13B0F5, #CA24B4);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.name-animation::before {
+  display: none;
+}
+
+.animation:hover::after {
+  transform: translate3d(0, 0, 0);
+}
+
+.animation span {
+  display: inline-block;
+  transition: transform .3s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.animation:hover span {
+  transform: translate3d(200%, 0, 0);
+}
+</style>
