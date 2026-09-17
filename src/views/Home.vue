@@ -94,13 +94,19 @@
         Adrian Paul
       </p>
       <p>I build things for web</p>
-      <a
-        class="resume-download-button"
-        href="/Adrian%20Paul%20De%20Los%20Reyes%20-%20Frontend%20Developer.pdf"
-        download="Web Engineer - De Los Reyes.pdf"
-      >
-        Download Resume
-      </a>
+      <div class="hero-actions">
+        <span class="availability-badge">
+          <span class="availability-dot" aria-hidden="true"></span>
+          Available for frontend opportunities
+        </span>
+        <a
+          class="resume-download-button"
+          href="/Adrian%20Paul%20De%20Los%20Reyes%20-%20Frontend%20Developer.pdf"
+          download="Web Engineer - De Los Reyes.pdf"
+        >
+          Download Resume
+        </a>
+      </div>
     </div>
     <img
       class="order-1 md:order-2 scroll-reveal scroll-reveal-right object-cover rounded-[50%] w-56 h-56 sm:w-72 sm:h-72 md:w-[350px] md:h-[350px]"
@@ -143,6 +149,20 @@
         </p>
         <span class="skill-tag inline-flex mt-3">React</span>
       </div>
+    </div>
+  </section>
+
+  <section id="strengths" class="content-section flex flex-col justify-center mt-24 md:mt-32 px-4 md:px-[8%]" aria-labelledby="strengths-title">
+    <div class="scroll-reveal section-heading">
+      <h2 id="strengths-title" class="section-title">What I Bring</h2>
+      <p class="section-subtitle">Practical experience that helps teams ship with confidence</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 max-w-6xl mx-auto w-full">
+      <article v-for="strength in strengths" :key="strength.title" class="scroll-reveal scroll-reveal-up content-card strength-card">
+        <span class="strength-icon" aria-hidden="true">{{ strength.icon }}</span>
+        <h3 class="strength-title">{{ strength.title }}</h3>
+        <p class="description-text">{{ strength.description }}</p>
+      </article>
     </div>
   </section>
 
@@ -192,8 +212,21 @@
       <p class="section-title">Projects</p>
       <p class="section-subtitle">Some things I have built</p>
     </div>
+    <div class="project-filters" aria-label="Filter projects by technology">
+      <button
+        v-for="filter in projectFilters"
+        :key="filter"
+        type="button"
+        class="project-filter"
+        :class="{ 'project-filter-active': activeProjectFilter === filter }"
+        :aria-pressed="activeProjectFilter === filter"
+        @click="activeProjectFilter = filter"
+      >
+        {{ filter }}
+      </button>
+    </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-6xl mx-auto w-full">
-      <article v-for="(project, index) in projects" :key="project.title" class="scroll-reveal scroll-reveal-up content-card project-card" :style="{ '--reveal-delay': `${index * 100}ms` }">
+      <article v-for="(project, index) in filteredProjects" :key="project.title" class="scroll-reveal scroll-reveal-up content-card project-card" :style="{ '--reveal-delay': `${index * 100}ms` }">
         <p class="project-title">{{ project.title }}</p>
         <p class="description-text">{{ project.description }}</p>
         <div class="flex flex-wrap gap-2 mt-5">
@@ -201,6 +234,7 @@
             {{ technology }}
           </span>
         </div>
+        <p v-if="filteredProjects.length === 0" class="description-text text-center mt-6">No projects match this filter yet.</p>
       </article>
     </div>
   </section>
@@ -274,25 +308,15 @@
   <section id="achievements" class="flex justify-center mt-24 md:mt-32">
     <div class="w-full px-4 md:px-[8%]">
       <p class="scroll-reveal section-title text-center">Experience & Education</p>
-      <div class="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <article class="scroll-reveal scroll-reveal-up content-card">
-          <p class="resume-label">Frontend Vue.js Developer</p>
-          <p class="resume-heading">A&B Leisure Inc. (Digiplus) | 2024 - Aug 2026</p>
-          <p class="description-text mt-4">
-            Delivered high-impact Vue.js projects for GameZone and BingoPlus, supporting
-            a platform serving 100K+ users and visitors. Resolved 100+ frontend bugs,
-            built reusable global components, and delivered responsive H5 experiences
-            integrated with iOS and Android applications.
-          </p>
-        </article>
-        <article class="scroll-reveal scroll-reveal-up content-card">
-          <p class="resume-label">Education</p>
-          <p class="resume-heading">Bachelor of Science in Information Technology</p>
-          <p class="description-text mt-2">Lyceum of Alabang | Graduated 2024</p>
-          <p class="description-text mt-2">Cum Laude and Dean&apos;s List Scholar (2020-2024)</p>
-          <p class="resume-label mt-6">Earlier Experience</p>
-          <p class="resume-heading">Front-end IT Intern (WordPress)</p>
-          <p class="description-text mt-2">Knowles Training Institute | 2024</p>
+      <div class="timeline mt-10">
+        <article v-for="event in timeline" :key="event.title" class="scroll-reveal timeline-item">
+          <div class="timeline-marker" aria-hidden="true"></div>
+          <div class="content-card timeline-card">
+            <p class="resume-label">{{ event.type }}</p>
+            <p class="resume-heading">{{ event.title }}</p>
+            <p class="timeline-date">{{ event.date }}</p>
+            <p class="description-text mt-3">{{ event.description }}</p>
+          </div>
         </article>
       </div>
     </div>
@@ -353,7 +377,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import Github from "../assets/images/svg/Github.svg";
 import LinkedIn from "../assets/images/svg/LinkedIn.svg";
 import Telegram from "../assets/images/svg/Telegram.svg";
@@ -384,6 +408,13 @@ interface Project {
   technologies: string[];
 }
 
+interface TimelineEvent {
+  type: string;
+  title: string;
+  date: string;
+  description: string;
+}
+
 const socials = ref<Socials[]>([
   {
     name: "Github",
@@ -408,6 +439,7 @@ const socials = ref<Socials[]>([
 const menuOpen = ref(false);
 const isDarkMode = ref(false);
 const showScrollTop = ref(false);
+const activeProjectFilter = ref("All");
 const contactForm = ref({
   name: "",
   email: "",
@@ -419,7 +451,7 @@ const projects = ref<Project[]>([
   {
     title: "GameZone Tablegame Champions Cup",
     description: "Responsive H5 landing pages for GameZone Tablegame Champions Cup Seasons 1-3, supporting event promotions and user engagement.",
-    technologies: ["Vue.js 3", "Tailwind CSS", "Axios", "Vue Router"],
+    technologies: ["Vue.js 3", "Tailwind CSS", "CSS", "Axios", "Vue Router"],
   },
   {
     title: "GTCC Block Management",
@@ -434,9 +466,68 @@ const projects = ref<Project[]>([
   {
     title: "BingoMini Frontend",
     description: "Responsive frontend for an online Bingo platform with interactive UI components and integrated frontend services.",
-    technologies: ["Vue.js 3", "Axios", "Element Plus"],
+    technologies: ["Vue.js 3", "CSS", "Axios", "Element Plus"],
   },
 ]);
+const projectFilters = computed(() => [
+  "All",
+  ...new Set(projects.value.flatMap((project) => project.technologies)),
+]);
+const filteredProjects = computed(() =>
+  activeProjectFilter.value === "All"
+    ? projects.value
+    : projects.value.filter((project) => project.technologies.includes(activeProjectFilter.value)),
+);
+
+watch(activeProjectFilter, async () => {
+  await nextTick();
+  document.querySelectorAll("#projects .scroll-reveal").forEach((element) => {
+    element.classList.add("is-visible");
+    revealObserver?.observe(element);
+  });
+});
+const strengths = [
+  {
+    icon: "01",
+    title: "Production Experience",
+    description: "Builds reliable frontend experiences for real users, products, and business goals.",
+  },
+  {
+    icon: "02",
+    title: "Responsive by Design",
+    description: "Creates polished interfaces that adapt across mobile, tablet, and desktop screens.",
+  },
+  {
+    icon: "03",
+    title: "Reusable Systems",
+    description: "Turns repeated UI patterns into maintainable components that teams can extend.",
+  },
+  {
+    icon: "04",
+    title: "Quality Mindset",
+    description: "Pays attention to accessibility, performance, debugging, and the details users feel.",
+  },
+];
+const timeline: TimelineEvent[] = [
+  {
+    type: "Experience",
+    title: "Frontend Vue.js Developer · A&B Leisure Inc. (Digiplus)",
+    date: "2024 - Aug 2026",
+    description: "Delivered Vue.js projects for GameZone and BingoPlus, resolved 100+ frontend bugs, and built reusable responsive H5 experiences for platforms serving 100K+ users and visitors.",
+  },
+  {
+    type: "Earlier Experience",
+    title: "Front-end IT Intern · Knowles Training Institute",
+    date: "2024",
+    description: "Supported frontend work and WordPress-based website development.",
+  },
+  {
+    type: "Education",
+    title: "Bachelor of Science in Information Technology · Lyceum of Alabang",
+    date: "2020 - 2024",
+    description: "Graduated Cum Laude and earned Dean's List recognition while building a strong foundation in software development and frontend engineering.",
+  },
+];
 const technicalSkills = [
   "JavaScript (ES6+)",
   "TypeScript",
@@ -859,7 +950,6 @@ const updateScrollTopVisibility = (): void => {
   position: relative;
   overflow: hidden;
   display: inline-block;
-  margin-top: 1.5rem;
   border-radius: 9999px;
   background-image: linear-gradient(to right, #13B0F5, #CA24B4);
   color: white;
@@ -874,6 +964,141 @@ const updateScrollTopVisibility = (): void => {
 .resume-download-button:hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 22px rgb(66 68 110 / 30%);
+}
+
+.availability-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgb(19 176 245 / 35%);
+  border-radius: 9999px;
+  background-color: rgb(19 176 245 / 8%);
+  color: #2563eb;
+  font-family: "dmSans";
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.45rem 0.8rem;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.availability-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 0 4px rgb(16 185 129 / 14%);
+  animation: availability-pulse 2s ease-in-out infinite;
+}
+
+.strength-card {
+  min-height: 100%;
+}
+
+.strength-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background-image: linear-gradient(135deg, #13B0F5, #CA24B4);
+  color: #ffffff;
+  font-family: "poppinsBold";
+  font-size: 0.9rem;
+}
+
+.strength-title {
+  margin-top: 1.25rem;
+  color: #42446E;
+  font-family: "poppinsBold";
+  font-size: 1.2rem;
+  line-height: 1.3;
+}
+
+.project-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 0 auto 2rem;
+  max-width: 60rem;
+}
+
+.project-filter {
+  border: 1px solid #bfdbfe;
+  border-radius: 9999px;
+  background-color: #ffffff;
+  color: #4b5563;
+  cursor: pointer;
+  font-family: "dmSans";
+  font-size: 0.9rem;
+  padding: 0.45rem 0.9rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.project-filter:hover,
+.project-filter-active {
+  border-color: #13B0F5;
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+.timeline {
+  position: relative;
+  display: grid;
+  gap: 1.5rem;
+  max-width: 56rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.timeline::before {
+  position: absolute;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  left: 0.7rem;
+  width: 2px;
+  background: linear-gradient(to bottom, #13B0F5, #CA24B4);
+  content: "";
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 2.75rem;
+}
+
+.timeline-marker {
+  position: absolute;
+  top: 1.8rem;
+  left: 0.25rem;
+  z-index: 1;
+  width: 0.95rem;
+  height: 0.95rem;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  background-color: #13B0F5;
+  box-shadow: 0 0 0 2px #13B0F5;
+}
+
+.timeline-date {
+  margin-top: 0.35rem;
+  color: #6b7280;
+  font-family: "dmSans";
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+@keyframes availability-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(0.8); }
 }
 
 .description-text {
@@ -992,6 +1217,36 @@ const updateScrollTopVisibility = (): void => {
 
 :global(body.dark-mode) .contact-link {
   color: #e5e7eb;
+}
+
+:global(body.dark-mode) .availability-badge {
+  background-color: rgb(19 176 245 / 14%);
+  color: #7dd3fc;
+}
+
+:global(body.dark-mode) .strength-title {
+  color: #f9fafb;
+}
+
+:global(body.dark-mode) .project-filter {
+  border-color: #475569;
+  background-color: #111827;
+  color: #d1d5db;
+}
+
+:global(body.dark-mode) .project-filter:hover,
+:global(body.dark-mode) .project-filter-active {
+  border-color: #13B0F5;
+  background-color: #1e293b;
+  color: #bae6fd;
+}
+
+:global(body.dark-mode) .timeline-marker {
+  border-color: #1f2937;
+}
+
+:global(body.dark-mode) .timeline-date {
+  color: #d1d5db;
 }
 
 .animation:focus-visible,
@@ -1209,12 +1464,6 @@ a:focus-visible {
   transform: translateY(-2px);
 }
 
-.dark-mode-toggle:hover {
-  border-color: #13B0F5;
-  box-shadow: 0 5px 14px rgb(19 176 245 / 18%);
-  transform: translateY(-2px);
-}
-
 .theme-icon {
   position: absolute;
   top: 50%;
@@ -1344,12 +1593,6 @@ body.dark-mode .tech-stack-icon:hover {
 .tech-name:hover {
   filter: drop-shadow(0 4px 8px rgb(202 36 180 / 28%));
   transform: translateY(-3px);
-  transition: filter 0.2s ease, transform 0.2s ease;
-}
-
-.tech-name:hover {
-  filter: drop-shadow(0 4px 8px rgb(202 36 180 / 28%));
-  transform: translateY(-3px);
 }
 
 .tech-stack-icon {
@@ -1408,6 +1651,7 @@ body.dark-mode .tech-stack-icon:hover {
   .hero-section > img,
   .dark-mode-toggle,
   .tech-name,
+  .project-filter,
   .footer-contact a,
   .footer-links button {
     transition: none;
@@ -1422,6 +1666,7 @@ body.dark-mode .tech-stack-icon:hover {
   .hero-section > img:hover,
   .dark-mode-toggle:hover,
   .tech-name:hover,
+  .project-filter:hover,
   .footer-contact a:hover,
   .footer-links button:hover {
     transform: none;
@@ -1432,6 +1677,10 @@ body.dark-mode .tech-stack-icon:hover {
   .form-submit::after,
   .resume-download-button::after {
     display: none;
+  }
+
+  .availability-dot {
+    animation: none;
   }
 
   .social-icon {
