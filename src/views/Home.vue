@@ -384,7 +384,7 @@ import Telegram from "../assets/images/svg/Telegram.svg";
 import GithubDark from "../assets/images/svg/GitHubDark.svg";
 import LinkedInDark from "../assets/images/svg/LinkedInDark.svg";
 import TelegramDark from "../assets/images/svg/TelegramDark.svg";
-import HeroImage from "../assets/images/Home/Ez.jpg";
+import HeroImage from "../assets/images/Home/ProfilePic.jpg";
 import HtmlIcon from "../assets/images/svg/techStack/Html.svg";
 import CssIcon from "../assets/images/svg/techStack/Css.svg";
 import JavaScriptIcon from "../assets/images/svg/techStack/JavaScript.svg";
