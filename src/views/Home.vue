@@ -97,7 +97,7 @@
       <div class="hero-actions">
         <span class="availability-badge">
           <span class="availability-dot" aria-hidden="true"></span>
-          Available for frontend opportunities
+          Available for web development opportunities
         </span>
         <a
           class="resume-download-button"
