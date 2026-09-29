@@ -101,7 +101,7 @@
         </span>
         <a
           class="resume-download-button"
-          href="/Adrian%20Paul%20De%20Los%20Reyes%20-%20Frontend%20Developer.pdf"
+          href="/Adrian%20Paul%20De%20Los%20Reyes%20-%20Developer.pdf"
           download="Web Engineer - De Los Reyes.pdf"
         >
           Download Resume
