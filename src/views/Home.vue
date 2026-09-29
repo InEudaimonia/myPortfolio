@@ -328,7 +328,7 @@
     <div class="footer-divider w-full h-[1px] bg-[#141414]"></div>
     <div class="scroll-reveal footer-main">
       <div class="footer-brand">
-        <p class="footer-name">Adrian Paul</p>
+        <p class="animation name-animation footer-name" data-replace="De Los Reyes">Adrian Paul</p>
         <p class="footer-role">Web Engineer</p>
         <p class="footer-location">Las Piñas City, Metro Manila, Philippines</p>
       </div>
@@ -1742,6 +1742,7 @@ body.dark-mode .tech-stack-icon:hover {
   overflow: hidden;
   position: relative;
   display: inline-block;
+  transition: color .3s ease .15s;
 }
 
 .animation::before,
@@ -1784,6 +1785,7 @@ body.dark-mode .tech-stack-icon:hover {
 
 .animation:hover {
   color: transparent;
+  transition-delay: 0s;
 }
 
 .name-animation {
